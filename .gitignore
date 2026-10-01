@@ -1,0 +1,23 @@
+# Доступы и секреты — только локально / на сервере
+config.php
+tracker_config.php
+.env
+.env.*
+
+# Данные: дампы, выгрузки, миграционные payload-файлы
+*.sql
+*.sql.gz
+!docs/schema.sql
+!docs/demo-seed.sql
+migration/*.json
+*.xlsx
+*.docx
+*.csv
+
+# Логи, бэкапы, служебное
+*.log
+*.bak
+*.zip
+.DS_Store
+.idea/
+.vscode/

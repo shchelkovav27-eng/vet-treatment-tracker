@@ -1,0 +1,25 @@
+# Конфиг с доступами к БД не должен отдаваться по HTTP ни при каких условиях,
+# включая случай, когда обработка PHP отключилась и файлы отдаются как текст.
+<FilesMatch "^config(\.example)?\.php$">
+  Require all denied
+</FilesMatch>
+# Резервные копии и дампы тоже наружу не отдаём
+<FilesMatch "\.(sql|bak|log|zip|gz)$">
+  Require all denied
+</FilesMatch>
+
+# MIME-типы для установки приложения на устройство (PWA).
+AddType application/manifest+json .webmanifest
+AddType image/png .png
+
+# Только HTTPS. По обычному http Safari не предлагает сохранить пароль,
+# а установка на домашний экран (service worker) браузером запрещена —
+# отсюда жалобы «не запоминает вход» и «не ставится приложение».
+# Протокол берём из двух источников: сервер за прокси, в $_SERVER['HTTPS']
+# он приходит только вместе с X-Forwarded-Proto.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>

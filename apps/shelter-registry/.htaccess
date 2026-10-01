@@ -1,0 +1,9 @@
+# Конфиг с доступами к БД не должен отдаваться по HTTP ни при каких условиях,
+# включая случай, когда обработка PHP отключилась и файлы отдаются как текст.
+<FilesMatch "^config(\.example)?\.php$">
+  Require all denied
+</FilesMatch>
+# Резервные копии и дампы тоже наружу не отдаём
+<FilesMatch "\.(sql|bak|log|zip|gz)$">
+  Require all denied
+</FilesMatch>
